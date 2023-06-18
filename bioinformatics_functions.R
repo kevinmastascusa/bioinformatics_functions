@@ -79,7 +79,6 @@ translate_sequence <- function(sequence) {
 }
 
 
-
 # Test: calculate_gc_content
 test_calculate_gc_content <- function(sequence) {
   gc_content <- calculate_gc_content(sequence)
