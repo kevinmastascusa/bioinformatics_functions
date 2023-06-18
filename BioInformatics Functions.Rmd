@@ -87,22 +87,20 @@ translate_sequence <- function(sequence) {
 ```r
 # Example usages
 
-# Calculate GC content
+# Calculate the GC content of a DNA sequence
 dna_sequence <- "ATGCCGTAATGGCCTAAG"
 gc_content <- calculate_gc_content(dna_sequence)
 print(gc_content)  # Output: 50
 
-# Count nucleotides
-dna_sequence <- "ATGCCGTAATGGCCTAAG"
+# Count the nucleotides in a DNA sequence
 nucleotide_counts <- count_nucleotides(dna_sequence)
 print(nucleotide_counts)
-# Output: A  T  G  C
-#         4  5  4  3
+# Output: A  C  G  T 
+#         5  4  5  4
 
-# Translate sequence
-dna_sequence <- "ATGCCGTAATGGCCTAAG"
+# Translate a DNA sequence to amino acids
 translated_sequence <- translate_sequence(dna_sequence)
 print(translated_sequence)
-# Output: [1] "M" "A" "N" "G" "P" "N"
+# Output: [1] "M" "P"
 
 ```
