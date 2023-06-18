@@ -78,9 +78,6 @@ translate_sequence <- function(sequence) {
   return(translated_sequence)
 }
 
-# Run the test again
-test_translate_sequence()
-
 
 
 # Test: calculate_gc_content
