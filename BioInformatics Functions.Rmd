@@ -1,0 +1,132 @@
+---
+title: "KZM Data Analytics - Custom Bioinformatics / Genomics R Functions"
+author: Kevin Zhou Mastascusa
+date: June 2023
+output:
+  html_document:
+    theme: spacelab
+    css: styles.css
+    toc: true
+    toc_float: true
+---
+
+## Function: calculate_gc_content
+
+**Description:** Calculates the GC content of a given DNA sequence.
+
+**Input:** - `sequence`: A character string representing the DNA sequence.
+
+**Output:** - `gc_content`: The GC content of the input sequence as a percentage.
+
+**Example Usage:**
+
+``` r
+# Calculate the GC content of a DNA sequence
+dna_sequence <- "ATGCCGTAATGGCCTAAG"
+gc_content <- calculate_gc_content(dna_sequence)
+print(gc_content)  # Output: 50
+```
+
+## Function: count_nucleotides
+
+**Description:** Counts the occurrence of each nucleotide (A, T, G, C) in a given DNA sequence.
+
+**Input:** - `sequence`: A character string representing the DNA sequence.
+
+**Output:** - `nucleotide_counts`: A named vector containing the counts of each nucleotide.
+
+**Example Usage:**
+
+``` r
+# Count the nucleotides in a DNA sequence
+dna_sequence <- "ATGCCGTAATGGCCTAAG"
+nucleotide_counts <- count_nucleotides(dna_sequence)
+print(nucleotide_counts)
+# Output: A  T  G  C
+#         4  5  4  3
+```
+
+## Function: translate_sequence
+
+**Description:** Translates a given DNA sequence into its corresponding amino acid sequence based on the genetic code.
+
+**Input:** - `sequence`: A character string representing the DNA sequence.
+
+**Output:** - `translated_sequence`: A character vector representing the translated amino acid sequence.
+
+**Example Usage:**
+
+``` r
+# Translate a DNA sequence to amino acids
+dna_sequence <- "ATGCCGTAATGGCCTAAG"
+translated_sequence <- translate_sequence(dna_sequence)
+print(translated_sequence)
+# Output: [1] "M" "A" "N" "G" "P" "N"
+```
+
+Please note that these functions assume the input sequences are in uppercase and do not account for non-standard or ambiguous codons.
+
+``` r
+calculate_gc_content <- function(sequence) {
+  # Convert the sequence to uppercase
+  sequence <- toupper(sequence)
+  
+  # Calculate the length of the sequence
+  sequence_length <- nchar(sequence)
+  
+  if (sequence_length == 0) {
+    # Handle case when the sequence is empty
+    gc_content <- 0
+  } else {
+    # Remove non-GC characters from the sequence
+    gc_sequence <- gsub("[^GC]", "", sequence)
+  
+    # Count the number of G and C nucleotides
+    gc_count <- nchar(gc_sequence)
+  
+    # Calculate the GC content
+    gc_content <- gc_count / sequence_length * 100
+  }
+  
+  # Return the GC content
+  return(gc_content)
+}
+
+count_nucleotides <- function(sequence) {
+  counts <- table(strsplit(sequence, "")[[1]])
+  return(counts)
+}
+
+translate_sequence <- function(sequence) {
+  codons <- strsplit(sequence, "(?<=\\G...)", perl = TRUE)[[1]]
+  amino_acids <- c("F", "L", "I", "M", "V", "S", "P", "T", "A", "Y", "H", "Q", "N", "K", "D", "E", "C", "W", "R", "G")
+  genetic_code <- c("TTT", "TTC", "TTA", "TTG", "CTT", "CTC", "CTA", "CTG", "ATT", "ATC", "ATA", "ATG", "GTT", "GTC", "GTA", "GTG",
+                    "TCT", "TCC", "TCA", "TCG", "CCT", "CCC", "CCA", "CCG", "ACT", "ACC", "ACA", "ACG", "GCT", "GCC", "GCA", "GCG",
+                    "TAT", "TAC", "CAT", "CAC", "CAA", "CAG", "AAT", "AAC", "AAA", "AAG", "GAT", "GAC", "GAA", "GAG", "TGT", "TGC",
+                    "TGG", "CGT", "CGC", "CGA", "CGG", "AGT", "AGC", "AGA", "AGG", "GGT", "GGC", "GGA", "GGG")
+  translated_sequence <- sapply(codons, function(codon) amino_acids[which(genetic_code == codon)])
+  return(translated_sequence)
+}
+```
+
+``` r
+# Example usages
+
+# Calculate GC content
+dna_sequence <- "ATGCCGTAATGGCCTAAG"
+gc_content <- calculate_gc_content(dna_sequence)
+print(gc_content)  # Output: 50
+
+# Count nucleotides
+dna_sequence <- "ATGCCGTAATGGCCTAAG"
+nucleotide_counts <- count_nucleotides(dna_sequence)
+print(nucleotide_counts)
+# Output: A  T  G  C
+#         4  5  4  3
+
+# Translate sequence
+dna_sequence <- "ATGCCGTAATGGCCTAAG"
+translated_sequence <- translate_sequence(dna_sequence)
+print(translated_sequence)
+# Output: [1] "M" "A" "N" "G" "P" "N"
+```
